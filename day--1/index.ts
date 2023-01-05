@@ -47,56 +47,104 @@ class Student extends User{
     }
 }
 
+type UpdateTecher = {
+    name : string,
+    age : number,
+    bangcap : string
+}
 
-let StudentArr : Array<Student> = []
-let TecherArr : Array<Techer> = []
+type UpdateStudent = {
+    name : string,
+    age : number,
+    Myclass : string
+}
 
 
-StudentArr.push(new Student("nghia",12,"6a"))
-StudentArr.push(new Student("hang",13,"7a"))
-StudentArr.push(new Student("bun",12,"6b"))
-StudentArr.push(new Student("nghia",14,"8a"))
+class School {
+    private static StudentArr : Array<Student> = []
+    private static TecherArr : Array<Techer> = []
+
+    static addTecher (techer : Techer): void {
+        this.TecherArr.push(techer)
+    }
+
+    static RemoveTecher (name : string) : void{
+        this.TecherArr = this.TecherArr.filter((techer) => techer.name !== name)
+    }
+
+    static UpdateTecher (techerUpdate : UpdateTecher) :void{
+        this.TecherArr = this.TecherArr.map((techer) => techer.name === techerUpdate.name ? new Techer(techerUpdate.name,techerUpdate.age,techerUpdate.bangcap) : techer)
+    }
+
+    static ShowTecher () :void{
+        this.TecherArr.forEach(ele => {
+            ele.getIntroTecher()
+        })
+    }
+
+    static addStudent (std : Student) : void{
+        this.StudentArr.push(std)
+    }
+
+    static updateStudent(stdUpdate : UpdateStudent) : void{
+        this.StudentArr = this.StudentArr .map((item) => item.name === stdUpdate.name ? new Student(stdUpdate.name,stdUpdate.age,stdUpdate.Myclass) : item)
+    }
+
+    static RemoveStd (stdName : string) : void{
+        this.StudentArr = this.StudentArr.filter(item => item.name !== stdName)
+    }
+
+    static ShowStudent ():void {
+        this.StudentArr.forEach(ele => {
+            ele.getIntroStudent()
+        })
+    }
+}
 
 
-TecherArr.push(new Techer("nghia",12,"cao dang"))
-TecherArr.push(new Techer("hang",13,"cu nhan"))
-TecherArr.push(new Techer("bun",12,"thac si"))
-TecherArr.push(new Techer("nghia",14,"cao dang"))
+School.addStudent(new Student("nghia",12,"6a"))
+School.addStudent(new Student("hang",13,"7a"))
+School.addStudent(new Student("bun",12,"6b"))
+School.addStudent(new Student("nghia",14,"8a"))
+
+
+School.addTecher(new Techer("nghia",12,"cao dang"))
+School.addTecher(new Techer("hang",13,"cu nhan"))
+School.addTecher(new Techer("bun",12,"thac si"))
+School.addTecher(new Techer("nghia",14,"cao dang"))
 
 
 const Main = () : void =>{
-    console.log("List Techer : ")
-    TecherArr.forEach(item => {
-        item.getIntroTecher()
-    })
+    console.log("Techer : ")
+
+    School.addTecher(new Techer("Hama",30,"tien si"))
+    School.ShowTecher()
 
     console.log("\n")
 
-    console.log("List Student : ")
-    StudentArr.forEach(item => {
-        item.getIntroStudent()
-    })
+    School.RemoveTecher("bun")
+    School.ShowTecher()
 
     console.log("\n")
 
-    console.log("Nang cap chat luong Techer cua truong : ")
-    TecherArr.forEach((item,index) => {
-        if(index %2===0){
-            item.UpdateBangcap("Cu nhan")
-        }else{
-            item.UpdateBangcap("Thac si")
-        }
-        item.getIntroTecher()
-    })
+    School.UpdateTecher({name : "Hama",age : 40,bangcap :"tien si"})
+    School.ShowTecher()
 
     console.log("\n")
-    console.log("Cuoi namg hoc sinh len lop")
-    StudentArr.forEach((item,index) => {
-        if(index%2 !== 0){
-            item.UpdateClass((Number(item.Myclass.charAt(0)) + 1) + item.Myclass.charAt(1))
-        }
-        item.getIntroStudent()
-    })
+
+    console.log("Studunt : ")
+    School.addStudent(new Student("khanh",10,"5a"))
+    School.ShowStudent()
+
+    console.log("\n")
+
+    School.updateStudent({name: "khanh",age : 11,Myclass :"6b"})
+    School.ShowStudent()
+
+    console.log("\n")
+
+    School.RemoveStd("bun")
+    School.ShowStudent()
 }
 
 Main()
